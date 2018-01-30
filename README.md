@@ -27,6 +27,9 @@ Our solution is in the [Practice Round folder](Practice%20Round).
 ## Authors
 
 Sebastian Brodehl / [@sbrodehl](https://github.com/sbrodehl)
+
 Tobias Kremer / [@tbkr](https://github.com/tbkr)
+
 Dennis Meyer / [@snakebite1457](https://github.com/snakebite1457)
+
 Moritz Schmidtgen / [@mschmi10](https://github.com/mschmi10)
