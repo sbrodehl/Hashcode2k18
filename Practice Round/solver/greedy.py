@@ -25,7 +25,7 @@ class Solver(BaseSolver):
     def solve(self):
         self.results = []
 
-        # Fir each row, reset the counters
+        # For each row, reset the counters
         for r in range(self.row_count):
             beg = 0
             end = 0
