@@ -1,16 +1,25 @@
-# Google \#Hash Code 2018
+# Google \# Hash Code 2018
 
-Solutions and code for the [Google \#Hash Code 2018 Challenge](https://hashcode.withgoogle.com) of our Team _Gyrating Flibbittygibbitts_.
+Solutions and code for the [Google \# Hash Code 2018 Challenge](https://hashcode.withgoogle.com) of our Team _Gyrating Flibbittygibbitts_.
 
-## Online Qualification Round
+![HashCode 2018 Banner](HashCode2018.png)
 
-The problem statement will be added once available.
-Our solution is in the [Online Qualification Round folder](Online%20Qualification%20Round).
+> Hash Code is a team programming competition organized by Google for students
+> and industry professionals across Europe, the Middle East and Africa.
+> You pick your team and programming language, we pick a Google engineering 
+> problem for you to solve.
+>
+> _from [\# Hash Code 2018](https://hashcode.withgoogle.com)_
 
 ## Final Round
 
 The problem statement will be added once available.
 Our solution is in the [Final Round folder](Final%20Round).
+
+## Online Qualification Round
+
+The problem statement will be added once available.
+Our solution is in the [Online Qualification Round folder](Online%20Qualification%20Round).
 
 ## Practice Round
 
