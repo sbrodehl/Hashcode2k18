@@ -40,7 +40,7 @@ class Solver(BaseSolver):
             ride_start = (six, siy)
             ride_end = (fix, fiy)
 
-            drive_len = _d(ride_start, ride_end)
+            drive_len = self._d(ride_start, ride_end)
             # choose random car
             rnd_veh = randint(0, self.vehicles - 1)
             veh_sched = time_table[rnd_veh]
@@ -50,7 +50,7 @@ class Solver(BaseSolver):
             # maybe randomize this
             car_avail_t = np.where(veh_sched == 0)[0][0]
 
-            d_to_ride = _d(car_pos[car_avail_t], ride_start)
+            d_to_ride = self._d(car_pos[car_avail_t], ride_start)
 
             # if we need to wait, start later
             if (car_avail_t + d_to_ride) - es > 0:
@@ -84,7 +84,3 @@ class Solver(BaseSolver):
                     lastel = iiiiddddxx
 
         return True
-
-
-def _d(tuple1, tuple2):
-    return np.abs(tuple1[0] - tuple2[0]) + np.abs(tuple1[1] - tuple2[1])

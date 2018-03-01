@@ -1,3 +1,9 @@
+import shutil
+
+import numpy as np
+from pathlib import Path
+
+
 class BaseSolver(object):
     """Don't touch this!
     This class makes sure that those two methods gets implemented,
@@ -29,10 +35,24 @@ class BaseSolver(object):
         :param output_str: The output filepath where to save the solution.
         :return: Nothing.
         """
-        with open(output_str, 'w') as f:
+        solution_file = Path(output_str)
+        prev_fs = solution_file.stat().st_size
+
+        with open(output_str + ".tmp", 'w') as f:
             for sched in self.scheduling:
                 f.write(" ".join([str(len(sched))] + [str(i) for i in sched]))
                 f.write('\n')
+
+        solution_file_now = Path(output_str + ".tmp")
+        now_fs = solution_file_now.stat().st_size
+
+        if now_fs > prev_fs:
+            print("Updating solution {} bytes more!!".format(now_fs - prev_fs))
+            shutil.move(output_str + ".tmp", output_str)
+
+    @staticmethod
+    def _d(t0, t1):
+        return np.abs(t0[0] - t1[0]) + np.abs(t0[1] - t1[1])
 
     def read_input(self):
         with open(self.input_str, 'r') as f:
