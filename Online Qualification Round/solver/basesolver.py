@@ -9,8 +9,9 @@ class BaseSolver(object):
         """
         self.input_str = input_str
 
-        self.drive_count = 0
-        self.rides = []
+        (self.rows, self.columns, self.vehicles,
+         self.rides, self.bonus, self.steps) = 0, 0, 0, 0, 0, 0
+        self.rides_list = []
         self.scheduling = []
         self.read_input()
 
@@ -34,16 +35,16 @@ class BaseSolver(object):
         with open(self.input_str, 'r') as f:
             first_line = f.readline()
 
-            R, C, F, N, B, T = tuple(
+            self.rows, self.columns, self.vehicles, self.rides, self.bonus, self.steps = tuple(
                 map(int, first_line.split(' '))
             )
 
-            self.rides = []
-            for i in range(N):
-                self.rides.append(tuple(
+            self.rides_list = []
+            for i in range(self.rides):
+                self.rides_list.append(tuple(
                     map(int, f.readline().rstrip().split(' '))
                 ))
 
         print("Problem statement:")
-        print(R, C, F, N, B, T)
-        print(self.rides)
+        print(self.rows, self.columns, self.vehicles, self.rides, self.bonus, self.steps)
+        print(self.rides_list)

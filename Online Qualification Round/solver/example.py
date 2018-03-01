@@ -16,6 +16,6 @@ class Solver(BaseSolver):
         :return: True, if a solution is found, False otherwise
         """
         print("Example {} method. Does nothing.".format("->".join([str(self.__class__.__name__), 'solve()'])))
-        print("Maybe I should do something with '{}'?".format(self.rides))
+        print("Maybe I should do something with '{}'?".format(self.rides_list))
 
         return False
