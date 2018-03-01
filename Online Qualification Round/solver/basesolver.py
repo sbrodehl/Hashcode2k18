@@ -17,6 +17,7 @@ class BaseSolver(object):
 
         (self.rows, self.columns, self.vehicles,
          self.rides, self.bonus, self.steps) = 0, 0, 0, 0, 0, 0
+        self.score = 0
         self.rides_list = []
         self.scheduling = []
         self.read_input()
@@ -29,9 +30,8 @@ class BaseSolver(object):
         """
         raise NotImplementedError("This method needs to be implemented.")
 
-    def score(self):
-
-        score = 0
+    def compute_score(self):
+        self.score = 0
         for i in range(len(self.scheduling)):
             rides_per_vehicle = self.scheduling[i]
             time_now = 0
@@ -39,20 +39,20 @@ class BaseSolver(object):
 
             for j in range(len(rides_per_vehicle)):
                 ride = rides_per_vehicle[j]
-                dist = abs(self.rides_list[ride][0] - pos_now[0])  + abs(self.rides_list[ride][1] - pos_now[1])
-                len_ride = abs(self.rides_list[ride][0] - self.rides_list[2])  + abs(self.rides_list[ride][1] - self.rides_list[3])
+                dist = abs(self.rides_list[ride][0] - pos_now[0]) + abs(self.rides_list[ride][1] - pos_now[1])
+                len_ride = abs(self.rides_list[ride][0] - self.rides_list[ride][2]) + abs(self.rides_list[ride][1] - self.rides_list[ride][3])
                 time_now += dist
 
                 #arrived perfectly
                 if time_now <= self.rides_list[ride][4]:
-                    score += self.bonus
+                    self.score += self.bonus
                     time_now += self.rides_list[ride][4] - time_now
 
                 latest_start = (self.rides_list[ride][5] - self.rides_list[ride][4]) - len_ride
 
                 if latest_start >= time_now:
                     time_now += len_ride
-                    score += len_ride
+                    self.score += len_ride
 
     def write(self, output_str):
         """Writes a solution file with the solved solution.
@@ -60,20 +60,12 @@ class BaseSolver(object):
         :param output_str: The output filepath where to save the solution.
         :return: Nothing.
         """
-        solution_file = Path(output_str)
-        prev_fs = solution_file.stat().st_size
-
-        with open(output_str + ".tmp", 'w') as f:
+        self.compute_score()
+        print(self.score)
+        with open(output_str + "_" + str(self.score), 'w') as f:
             for sched in self.scheduling:
                 f.write(" ".join([str(len(sched))] + [str(i) for i in sched]))
                 f.write('\n')
-
-        solution_file_now = Path(output_str + ".tmp")
-        now_fs = solution_file_now.stat().st_size
-
-        if now_fs > prev_fs:
-            print("Updating solution {} bytes more!!".format(now_fs - prev_fs))
-            shutil.move(output_str + ".tmp", output_str)
 
     @staticmethod
     def _d(t0, t1):
