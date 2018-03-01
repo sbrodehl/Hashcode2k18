@@ -4,10 +4,15 @@ class BaseSolver(object):
     as needed in main.py.
     """
 
-    def __init__(self):
+    def __init__(self, input_str):
         """Initialisation of the given problem.
         """
-        raise NotImplementedError("This method needs to be implemented.")
+        self.input_str = input_str
+
+        self.drive_count = 0
+        self.rides = []
+        self.scheduling = []
+        self.read_input()
 
     def solve(self):
         """Solves the problem.
@@ -24,3 +29,21 @@ class BaseSolver(object):
         :return: Nothing.
         """
         raise NotImplementedError("This method needs to be implemented.")
+
+    def read_input(self):
+        with open(self.input_str, 'r') as f:
+            first_line = f.readline()
+
+            R, C, F, N, B, T = tuple(
+                map(int, first_line.split(' '))
+            )
+
+            self.rides = []
+            for i in range(N):
+                self.rides.append(tuple(
+                    map(int, f.readline().rstrip().split(' '))
+                ))
+
+        print("Problem statement:")
+        print(R, C, F, N, B, T)
+        print(self.rides)
