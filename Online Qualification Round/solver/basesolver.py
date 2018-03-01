@@ -23,6 +23,31 @@ class BaseSolver(object):
         """
         raise NotImplementedError("This method needs to be implemented.")
 
+    def score(self):
+
+        score = 0
+        for i in range(len(self.scheduling)):
+            rides_per_vehicle = self.scheduling[i]
+            time_now = 0
+            pos_now = (0, 0)
+
+            for j in range(len(rides_per_vehicle)):
+                ride = rides_per_vehicle[j]
+                dist = abs(self.rides_list[ride][0] - pos_now[0])  + abs(self.rides_list[ride][1] - pos_now[1])
+                len_ride = abs(self.rides_list[ride][0] - self.rides_list[2])  + abs(self.rides_list[ride][1] - self.rides_list[3])
+                time_now += dist
+
+                #arrived perfectly
+                if time_now <= self.rides_list[ride][4]:
+                    score += self.bonus
+                    time_now += self.rides_list[ride][4] - time_now
+
+                latest_start = (self.rides_list[ride][5] - self.rides_list[ride][4]) - len_ride
+
+                if latest_start >= time_now:
+                    time_now += len_ride
+                    score += len_ride
+
     def write(self, output_str):
         """Writes a solution file with the solved solution.
 
