@@ -31,7 +31,7 @@ class BaseSolver(object):
         """
         with open(output_str, 'w') as f:
             for sched in self.scheduling:
-                f.write(" ".join([str(len(sched))] + sched))
+                f.write(" ".join([str(len(sched))] + [str(i) for i in sched]))
                 f.write('\n')
 
     def read_input(self):
