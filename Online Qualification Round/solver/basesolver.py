@@ -29,7 +29,10 @@ class BaseSolver(object):
         :param output_str: The output filepath where to save the solution.
         :return: Nothing.
         """
-        raise NotImplementedError("This method needs to be implemented.")
+        with open(output_str, 'w') as f:
+            for sched in self.scheduling:
+                f.write(" ".join([str(len(sched))] + sched))
+                f.write('\n')
 
     def read_input(self):
         with open(self.input_str, 'r') as f:
@@ -44,6 +47,7 @@ class BaseSolver(object):
                 self.rides_list.append(tuple(
                     map(int, f.readline().rstrip().split(' '))
                 ))
+            self.scheduling = [[] for _ in range(self.vehicles)]
 
         print("Problem statement:")
         print(self.rows, self.columns, self.vehicles, self.rides, self.bonus, self.steps)
