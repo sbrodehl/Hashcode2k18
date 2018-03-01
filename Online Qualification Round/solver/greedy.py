@@ -41,39 +41,41 @@ class Solver(BaseSolver):
             ride_end = (fix, fiy)
 
             drive_len = self._d(ride_start, ride_end)
-            # choose random car
-            rnd_veh = randint(0, self.vehicles - 1)
-            veh_sched = time_table[rnd_veh]
-            car_pos = veh_pos[rnd_veh]
+            for cccaaaar in range(10):
+                # choose random car
+                rnd_veh = randint(0, self.vehicles - 1)
+                veh_sched = time_table[rnd_veh]
+                car_pos = veh_pos[rnd_veh]
 
-            # choose earliest avail start time
-            # maybe randomize this
-            car_avail_t = np.where(veh_sched == 0)[0][0]
+                # choose earliest avail start time
+                # maybe randomize this
+                car_avail_t = np.where(veh_sched == 0)[0][0]
 
-            d_to_ride = self._d(car_pos[car_avail_t], ride_start)
+                d_to_ride = self._d(car_pos[car_avail_t], ride_start)
 
-            # if we need to wait, start later
-            if (car_avail_t + d_to_ride) - es > 0:
-                car_avail_t += (car_avail_t + d_to_ride) - es
+                # if we need to wait, start later
+                if (car_avail_t + d_to_ride) - es > 0:
+                    car_avail_t += (car_avail_t + d_to_ride) - es
 
-            # ###
-            start = car_avail_t
-            trip_len = d_to_ride + drive_len
-            # check for in time delivery
-            if lf < start + trip_len:
-                continue
+                # ###
+                start = car_avail_t
+                trip_len = d_to_ride + drive_len
+                # check for in time delivery
+                if lf < start + trip_len:
+                    continue
 
-            ones = np.ones(shape=(trip_len,))
-            cache = veh_sched[start: start + trip_len]
-            veh_sched[start: start + trip_len] = np.add(veh_sched[start: start + trip_len], ones)
+                ones = np.ones(shape=(trip_len,))
+                cache = veh_sched[start: start + trip_len]
+                veh_sched[start: start + trip_len] = np.add(veh_sched[start: start + trip_len], ones)
 
-            # sanity check for over booking
-            if np.max(veh_sched) > 1:
-                veh_sched[start: start + trip_len] = cache
-                continue
+                # sanity check for over booking
+                if np.max(veh_sched) > 1:
+                    veh_sched[start: start + trip_len] = cache
+                    continue
 
-            car_pos[start + trip_len] = ride_end
-            veh_rid_id[rnd_veh][start: start + trip_len] = [idx] * trip_len
+                car_pos[start + trip_len] = ride_end
+                veh_rid_id[rnd_veh][start: start + trip_len] = [idx] * trip_len
+                break
 
         # reduce ids for solution
         for idx in range(self.vehicles):
