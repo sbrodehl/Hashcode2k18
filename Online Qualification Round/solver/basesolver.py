@@ -50,5 +50,8 @@ class BaseSolver(object):
             self.scheduling = [[] for _ in range(self.vehicles)]
 
         print("Problem statement:")
-        print(self.rows, self.columns, self.vehicles, self.rides, self.bonus, self.steps)
-        # print(self.rides_list)
+        print("Map: {}".format((self.rows, self.columns)),
+              "Vehicles: {}".format(self.vehicles),
+              "Rides: {}".format(self.rides),
+              "Bonus: {}".format(self.bonus),
+              "Steps: {}".format(self.steps))
