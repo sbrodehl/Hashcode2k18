@@ -2,6 +2,7 @@ from .basesolver import BaseSolver
 
 import numpy as np
 from random import randint
+from tqdm import tqdm
 
 
 class Solver(BaseSolver):
@@ -32,13 +33,14 @@ class Solver(BaseSolver):
 
         del l, ll
 
+        pbar = tqdm(total=len(self.rides_list))
         for idx, ride in enumerate(self.rides_list):
+            pbar.update(1)
             six, siy, fix, fiy, es, lf = ride
             ride_start = (six, siy)
             ride_end = (fix, fiy)
-            print(ride_start, ride_end, es, lf)
 
-            drive_len = _d(ride_start, ride_end)
+            drive_len = self._d(ride_start, ride_end)
             # choose random car
             rnd_veh = randint(0, self.vehicles - 1)
             veh_sched = time_table[rnd_veh]
@@ -46,9 +48,9 @@ class Solver(BaseSolver):
 
             # choose earliest avail start time
             # maybe randomize this
-            car_avail_t = np.argmin(np.cumsum(veh_sched))
+            car_avail_t = np.where(veh_sched == 0)[0][0]
 
-            d_to_ride = _d(car_pos[car_avail_t], ride_start)
+            d_to_ride = self._d(car_pos[car_avail_t], ride_start)
 
             # if we need to wait, start later
             if (car_avail_t + d_to_ride) - es > 0:
@@ -82,7 +84,3 @@ class Solver(BaseSolver):
                     lastel = iiiiddddxx
 
         return True
-
-
-def _d(tuple1, tuple2):
-    return np.abs(tuple1[0] - tuple2[0]) + np.abs(tuple1[1] - tuple2[1])
