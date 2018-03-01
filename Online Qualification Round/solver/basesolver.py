@@ -51,4 +51,4 @@ class BaseSolver(object):
 
         print("Problem statement:")
         print(self.rows, self.columns, self.vehicles, self.rides, self.bonus, self.steps)
-        print(self.rides_list)
+        # print(self.rides_list)

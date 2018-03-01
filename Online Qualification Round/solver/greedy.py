@@ -2,6 +2,7 @@ from .basesolver import BaseSolver
 
 import numpy as np
 from random import randint
+from tqdm import tqdm
 
 
 class Solver(BaseSolver):
@@ -32,11 +33,12 @@ class Solver(BaseSolver):
 
         del l, ll
 
+        pbar = tqdm(total=len(self.rides_list))
         for idx, ride in enumerate(self.rides_list):
+            pbar.update(1)
             six, siy, fix, fiy, es, lf = ride
             ride_start = (six, siy)
             ride_end = (fix, fiy)
-            print(ride_start, ride_end, es, lf)
 
             drive_len = _d(ride_start, ride_end)
             # choose random car
@@ -46,7 +48,7 @@ class Solver(BaseSolver):
 
             # choose earliest avail start time
             # maybe randomize this
-            car_avail_t = np.argmin(np.cumsum(veh_sched))
+            car_avail_t = np.where(veh_sched == 0)[0][0]
 
             d_to_ride = _d(car_pos[car_avail_t], ride_start)
 
