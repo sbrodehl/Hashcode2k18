@@ -1,6 +1,7 @@
 from .basesolver import BaseSolver
 
 import numpy as np
+from tqdm import tqdm
 
 
 class Solver(BaseSolver):
@@ -22,6 +23,7 @@ class Solver(BaseSolver):
         on_mission = np.zeros(shape=(self.vehicles, self.steps), dtype=np.uint8)
         cars = [{'pos': (0, 0)} for _ in range(self.vehicles)]
 
+        time_pbar = tqdm(total=self.steps, desc='time loop')
         # run simulation
         while time < self.steps:
 
@@ -62,7 +64,8 @@ class Solver(BaseSolver):
                 car['pos'] = ride_end
 
             time += 1
-
+            time_pbar.update(1)
+        time_pbar.close()
         return True
 
     @staticmethod
