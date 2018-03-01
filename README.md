@@ -45,7 +45,7 @@ The easiest way to install those dependencies is by using the [requirements.txt]
 pip3 install -r requirements.txt
 ```
 
-### Programming \/ *Solver* structure
+### Code \& *Solver* Structure
 
 The solutions are called from the `main.py` program of the corresponding round,
 e.g. [Online Qualification Round/main.py](Online%20Qualification%20Round/main.py),
