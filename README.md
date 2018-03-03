@@ -17,10 +17,30 @@ The problem statement will be added once available.
 Our solution is in the [Final Round folder](Final%20Round).
 
 ## Online Qualification Round
+### Self-driving rides
 
-The problem statement will be added once available.
+The problem statement can be found [here](Online%20Qualification%20Round/online_qualification_round_2018.pdf).
 Our solution is in the [Online Qualification Round folder](Online%20Qualification%20Round).
 
+> Millions of people commute by car every day; for example, to school or to their workplace.
+>
+> Self-driving vehicles are an exciting development for transportation.
+> They aim to make traveling by car safer and more available while also saving commuters time.
+>
+> In this competition problem, we’ll be looking at how a fleet of self-driving vehicles can efficiently get commuters to their destinations in a simulated city. 
+>
+> _from [Problem statement for the Online Qualification Round of Hash Code 2018](Online%20Qualification%20Round/online_qualification_round_2018.pdf)_
+
+#### Task
+
+> Given a list of pre-booked rides in a city and a fleet of self-driving vehicles,
+> assign the rides to vehicles, so that riders get to their destinations on time.
+>
+> For every ride that finishes on time (or early), you will earn points
+> proportional to the distance of that ride;
+> plus an additional bonus if the ride also started precisely on time.
+>
+> _from [Problem statement for the Online Qualification Round of Hash Code 2018](Online%20Qualification%20Round/online_qualification_round_2018.pdf)_
 ## Practice Round
 
 The problem statement can be found [here](Practice%20Round/pizza.pdf).
