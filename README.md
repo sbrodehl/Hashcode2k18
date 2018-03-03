@@ -22,6 +22,8 @@ Our solution is in the [Final Round folder](Final%20Round).
 The problem statement can be found [here](Online%20Qualification%20Round/online_qualification_round_2018.pdf).
 Our solution is in the [Online Qualification Round folder](Online%20Qualification%20Round).
 
+#### Introduction
+
 > Millions of people commute by car every day; for example, to school or to their workplace.
 >
 > Self-driving vehicles are an exciting development for transportation.
@@ -41,6 +43,7 @@ Our solution is in the [Online Qualification Round folder](Online%20Qualificatio
 > plus an additional bonus if the ride also started precisely on time.
 >
 > _from [Problem statement for the Online Qualification Round of Hash Code 2018](Online%20Qualification%20Round/online_qualification_round_2018.pdf)_
+
 ## Practice Round
 
 The problem statement can be found [here](Practice%20Round/pizza.pdf).
