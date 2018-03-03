@@ -1,6 +1,2 @@
 numpy
 tqdm
-pandas
-scikit-image
-matplotlib
-scipy
