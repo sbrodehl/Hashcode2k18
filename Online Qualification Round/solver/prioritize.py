@@ -5,9 +5,11 @@ from tqdm import tqdm
 
 
 class Solver(BaseSolver):
-    """Solve the problem nice and steady!
+    """Chooses a ride for each car by computing a 'priority',
+    which is the time needed to reach the ride 'in time' or
+    as close as possible to the earliest start time.
 
-    !!! This class need to be named 'Solver', otherwise main.py won't find this class.
+    Spoiler alert: it is not that efficient!
     """
 
     def solve(self):
@@ -67,7 +69,3 @@ class Solver(BaseSolver):
             time_pbar.update(1)
         time_pbar.close()
         return True
-
-    @staticmethod
-    def _d(t0, t1):
-        return np.abs(t0[0] - t1[0]) + np.abs(t0[1] - t1[1])

@@ -1,7 +1,4 @@
-import shutil
-
 import numpy as np
-from pathlib import Path
 
 
 class BaseSolver(object):
@@ -31,6 +28,11 @@ class BaseSolver(object):
         raise NotImplementedError("This method needs to be implemented.")
 
     def compute_score(self):
+        """
+        This scoring method is not correct.
+
+        :return: the computed score of the given scheduling
+        """
         self.score = 0
         for i in range(len(self.scheduling)):
             rides_per_vehicle = self.scheduling[i]
@@ -43,7 +45,7 @@ class BaseSolver(object):
                 len_ride = abs(self.rides_list[ride][0] - self.rides_list[ride][2]) + abs(self.rides_list[ride][1] - self.rides_list[ride][3])
                 time_now += dist
 
-                #arrived perfectly
+                # arrived perfectly
                 if time_now <= self.rides_list[ride][4]:
                     self.score += self.bonus
                     time_now += self.rides_list[ride][4] - time_now
@@ -53,6 +55,8 @@ class BaseSolver(object):
                 if latest_start >= time_now:
                     time_now += len_ride
                     self.score += len_ride
+
+        return self.score
 
     def write(self, output_str):
         """Writes a solution file with the solved solution.

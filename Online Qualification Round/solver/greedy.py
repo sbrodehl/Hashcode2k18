@@ -6,9 +6,9 @@ from tqdm import tqdm
 
 
 class Solver(BaseSolver):
-    """Solve the problem nice and steady!
+    """Randomly choose a vehicle for every ride, once.
 
-    !!! This class need to be named 'Solver', otherwise main.py won't find this class.
+    Spoiler alter: works quite fast, scores quite low.
     """
 
     def solve(self):
