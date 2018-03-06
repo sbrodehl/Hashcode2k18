@@ -44,6 +44,9 @@ Our solution is in the [Online Qualification Round folder](Online%20Qualificatio
 >
 > _from [Problem statement for the Online Qualification Round of Hash Code 2018](Online%20Qualification%20Round/online_qualification_round_2018.pdf)_
 
+Here is a visualization of our solution of the map [High Bonus](Online%20Qualification%20Round/input/e_high_bonus.in).
+![Example Output Visualization](Online%20Qualification%20Round/output/e_high_bonus.png)
+
 ## Practice Round
 
 The problem statement can be found [here](Practice%20Round/pizza.pdf).
