@@ -1,304 +1,350 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <style type="text/css">
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-    body, html {
-      height: 100%;
-      width: 100%;
-    }
-    #svgWrapper {
-      height: 100%;
-      width: 100%;
-    }
-    #svg {
-      max-width: 100%;
-      max-height: 100%;
-    }
-    .box {
-      border-radius: 50%;
-      display: inline-block;
-      height: 20px;
-      vertical-align: text-bottom;
-      width: 20px;
-    }
-    .hidden {
-      display: none;
-    }
-  </style>
-  <style>
-    #holder { border: 10px dashed #ccc; width: 300px; min-height: 300px; margin: 20px auto;}
-    #holder.hover { border: 10px dashed #0c0; }
-    #holder img { display: block; margin: 10px auto; }
-    #holder p { margin: 10px; font-size: 14px; }
-    progress { width: 100%; }
-    progress:after { content: '%'; }
-    .fail { background: #c00; padding: 2px; color: #fff; }
-    .hidden { display: none !important;}
-  </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+        }
+
+        #svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .box {
+            border-radius: 50%;
+            display: inline-block;
+            height: 20px;
+            vertical-align: text-bottom;
+            width: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <style>
+        #holder {
+            border: 10px dashed #ccc;
+            width: 300px;
+            min-height: 300px;
+            margin: 20px auto;
+        }
+
+        #holder.hover {
+            border: 10px dashed #0c0;
+        }
+
+        #holder img {
+            display: block;
+            margin: 10px auto;
+        }
+
+        #holder p {
+            margin: 10px;
+            font-size: 14px;
+        }
+
+        progress {
+            width: 100%;
+        }
+
+        progress:after {
+            content: '%';
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+    </style>
 </head>
 <body>
-  <nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="../../icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    Self-driving rides
-  </a>
+<nav id="nav" class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="../../icon.png" width="30px" height="30px" class="d-inline-block align-top" alt="">
+        Self-driving rides
+    </a>
 
-  <form class="form-inline">
     <button class="btn btn-primary btn-sm" id="generate">Generate new!</button>
-  </form>
 
-  <span class="navbar-text">
-    Ride taken: <div class="box" style="background:green"></div>
-  </span>
-  <span class="navbar-text">
-    Ride taken but no points earned: <div class="box" style="background:orange"></div>
-  </span>
-  <span class="navbar-text">
-    Ride missed: <div class="box" style="background:red"></div>
-  </span>
-  <span class="navbar-text">
-    Bonus!: <div class="box" style="background:yellow"></div>
-  </span>
-  <span class="navbar-text">
-    Note: Up to 100 randomly selected rides are displayed.
-  </span>
-  
-  <form class="form-inline">
+    <span class="navbar-text">
+        Ride taken: <span class="box" style="background:green"></span>
+    </span>
+    <span class="navbar-text">
+        Ride taken but no points earned: <span class="box" style="background:orange"></span>
+    </span>
+    <span class="navbar-text">
+        Ride missed: <span class="box" style="background:red"></span>
+    </span>
+    <span class="navbar-text">
+        Bonus!: <span class="box" style="background:yellow"></span>
+    </span>
+    <span class="navbar-text">
+        Note: Up to 100 randomly selected rides are displayed.
+    </span>
+
     <button class="btn btn-secondary btn-sm" id="uploadbtn">Upload</button>
-  </form>
 
-  </div>
 </nav>
-  <div class="container-fluid" style="height: 100%;">
-    <div class="row" style="height: 100%;">
-      <div id="svgWrapper" style="width: 100%; width: 100%">
-        <svg id="svg" width="100%" height="100%"/>
-      </div>  
-    </div>
-  </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Visualize Submission</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="holder"></div> 
-        <p id="upload" class="hidden">
-          <label>Drag &amp; drop not supported, but you can still upload via this input field:<br><input type="file"></label>
-        </p>
-        <p id="filereader">File API &amp; FileReader API not supported</p>
-        <p id="formdata">XHR2's FormData is not supported</p>
-        <p id="progress">XHR2's upload progress isn't supported</p>
-        <p class="hidden">Upload progress: <progress id="uploadprogress" max="100" value="0">0</progress></p>
-        <p id="textprev"></p>
-      </div>
-      <div class="modal-footer">
-        Drag &amp; drop a visualization file on to the drop zone above.
-      </div>
-    </div>
-  </div>
+<div style="margin-right: auto; margin-left: auto;">
+    <svg id="svg"
+         viewBox="0 0 100 100"
+         >
+    </svg>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Visualize Submission</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="holder"></div>
+                <p id="upload" class="hidden">
+                    <label>Drag &amp; drop not supported, but you can still upload via this input field:<br><input
+                            type="file"></label>
+                </p>
+                <p id="filereader">File API &amp; FileReader API not supported</p>
+                <p id="formdata">XHR2's FormData is not supported</p>
+                <p id="progress">XHR2's upload progress isn't supported</p>
+                <p class="hidden">Upload progress:
+                    <progress id="uploadprogress" max="100" value="0">0</progress>
+                </p>
+                <p id="textprev"></p>
+            </div>
+            <div class="modal-footer">
+                Drag &amp; drop a visualization file on to the drop zone above.
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
-$('#exampleModalCenter').modal({'backdrop': 'static'})
-$('#exampleModalCenter').modal('toggle')
+    $(window).on("resize", function() {
+        // avoid scrollbars, scale (arbitrary) to 96%.
+        container = $("#svg").parent();
+        w = $(window).width() * 0.96;
+        h = $(window).height();
+        h = h - $("#nav").outerHeight();
+        h = h * 0.96;
+        h = Math.floor(h);
+        w = Math.floor(w);
+        container.css( "height", h + 'px' );
+        container.css( "width", w + 'px' );
+    }).trigger("resize");
 
-$('#uploadbtn').on('click', function (e) {
-  $('#exampleModalCenter').modal('toggle')
-})
 
-var Visualization = function(svg, data) {
-  // The code here is copied from the hashcodejudge website
-  // https://hashcodejudge.withgoogle.com/visualization/wheel/
+    var modal = $('#exampleModalCenter');
+    modal.modal({'backdrop': 'static'});
+    modal.modal('toggle');
 
-  var svg_width = svg.node().getBoundingClientRect().width;
-  var svg_height = svg.node().getBoundingClientRect().height;
-  // column is x, rows is y
-  var data_width = data.column;
-  var data_height = data.row;
+    $('#uploadbtn').on('click', function (e) {
+        $('#exampleModalCenter').modal('toggle')
+    });
 
-  var line_width = 2;
-  var margin = line_width * 6;
-  var scale = Math.min((svg_width - margin)/ data_width, (svg_height - margin)/ data_height);
+    var Visualization = function (svg, data) {
+        // The code here is copied from the hash code judge website
+        // https://hashcodejudge.withgoogle.com/visualization/wheel/
 
-  var image_width = data_width * scale;
-  var image_height = data_height * scale;
+        var svg_width = Math.floor(svg.node().getBoundingClientRect().width);
+        var svg_height = Math.floor(svg.node().getBoundingClientRect().height);
 
-  // (0,0) = left bottom corner
-  var zero_x = (svg_width - image_width) / 2;
-  var zero_y = svg_height - (svg_height - image_height) / 2;
+        $("#svg").attr("viewBox", "0 0 " + svg_width + " " + svg_height);
 
-  var getImageX = function (row, column) {
-    return zero_x + column * scale;
-  };
+        // column is x, rows is y
+        var data_width = data.column;
+        var data_height = data.row;
 
-  var getImageY = function (row, column) {
-    return zero_y - row * scale;
-  };
+        var line_width = 2;
+        var margin = line_width * 6;
+        var scale = Math.min((svg_width - margin) / data_width, (svg_height - margin) / data_height);
 
-  svg.append("rect")
-     .attr("x", zero_x-line_width*2)
-     .attr("y", (svg_height-zero_y)-line_width*2)
-     .attr("width", image_width+4*line_width)
-     .attr("height", image_height+4*line_width)
-     .attr("fill", "rgba(255,255,255,0.7)")
-     .attr("stroke-width", 1)
-     .style("stroke-dasharray", ("3, 3"));
+        var image_width = data_width * scale;
+        var image_height = data_height * scale;
 
-  var checkRideColor = function(ride_qualifier) {
-    if (ride_qualifier > 0) return "green"
-    if (ride_qualifier == 0) return "orange"
-    if (ride_qualifier < 0) return "red"
-  }
-  var checkBonusColor = function(ride_qualifier) {
-    if (ride_qualifier > 100) return "yellow"
-    return checkRideColor(ride_qualifier);
-  }
+        // (0,0) = left bottom corner
+        var zero_x = (svg_width - image_width) / 2;
+        var zero_y = svg_height - (svg_height - image_height) / 2;
 
-  var drawRideInternal = function(x1,y1,x2,y2,ride_qualifier) {
-    svg.append("line")
-       .attr("x1", x1)
-       .attr("y1", y1)
-       .attr("x2", x2)
-       .attr("y2", y1)
-       .attr("stroke-width", line_width)
-       .attr("stroke", checkRideColor(ride_qualifier))
-       .classed("ride", true);
-    svg.append("line")
-       .attr("x1", x2)
-       .attr("y1", y1)
-       .attr("x2", x2)
-       .attr("y2", y2)
-       .attr("stroke-width", line_width)
-       .attr("stroke", checkRideColor(ride_qualifier))
-       .classed("ride", true);
-    // start of
-    svg.append("circle")
-       .attr("cx",x1)
-       .attr("cy", y1)
-       .attr("r", line_width * 1.5)
-       .attr("stroke", checkBonusColor(ride_qualifier))
-       .attr("fill", checkBonusColor(ride_qualifier))
-       .classed("ride", true);
-  }
-  var drawRide =  function(start_row, start_column, finish_row, finish_column, ride_qualifier) {
-    drawRideInternal(
-      getImageX(start_row, start_column),
-      getImageY(start_row, start_column),
-      getImageX(finish_row, finish_column),
-      getImageY(finish_row, finish_row),
-      ride_qualifier
-    );
-  }
+        var getImageX = function (row, column) {
+            return zero_x + column * scale;
+        };
 
-  var draw = function (data) {
-    for (var i = 0; i < data.rides.length && i < 100; i++) {
-      // take random rides if num_rides > 100
-      var ride_id = data.rides.length > 100 ?
-                      Math.floor((Math.random() * data.rides.length)) : i;
-      var ride = data.rides[ride_id];
-      drawRide(ride[0], ride[1], ride[2], ride[3], ride[4]);
+        var getImageY = function (row, column) {
+            return zero_y - row * scale;
+        };
+
+        svg.append("rect")
+            .attr("x", zero_x - line_width * 2)
+            .attr("y", (svg_height - zero_y) - line_width * 2)
+            .attr("width", image_width + 4 * line_width)
+            .attr("height", image_height + 4 * line_width)
+            .attr("fill", "lightgray")
+            .attr("stroke-width", 1)
+            .style("stroke-dasharray", ("3, 3"));
+
+        var checkRideColor = function (ride_qualifier) {
+            if (ride_qualifier > 0) return "green";
+            if (ride_qualifier < 0) return "red";
+            return "orange";
+        };
+        var checkBonusColor = function (ride_qualifier) {
+            if (ride_qualifier > 100) return "yellow";
+            return checkRideColor(ride_qualifier);
+        };
+
+        var drawRideInternal = function (x1, y1, x2, y2, ride_qualifier) {
+            svg.append("line")
+                .attr("x1", x1)
+                .attr("y1", y1)
+                .attr("x2", x2)
+                .attr("y2", y1)
+                .attr("stroke-width", line_width)
+                .attr("stroke", checkRideColor(ride_qualifier))
+                .classed("ride", true);
+            svg.append("line")
+                .attr("x1", x2)
+                .attr("y1", y1)
+                .attr("x2", x2)
+                .attr("y2", y2)
+                .attr("stroke-width", line_width)
+                .attr("stroke", checkRideColor(ride_qualifier))
+                .classed("ride", true);
+            // start of
+            svg.append("circle")
+                .attr("cx", x1)
+                .attr("cy", y1)
+                .attr("r", line_width * 1.5)
+                .attr("stroke", checkBonusColor(ride_qualifier))
+                .attr("fill", checkBonusColor(ride_qualifier))
+                .classed("ride", true);
+        };
+        var drawRide = function (start_row, start_column, finish_row, finish_column, ride_qualifier) {
+            drawRideInternal(
+                getImageX(start_row, start_column),
+                getImageY(start_row, start_column),
+                getImageX(finish_row, finish_column),
+                getImageY(finish_row, finish_row),
+                ride_qualifier
+            );
+        };
+
+        var draw = function (data) {
+            for (var i = 0; i < data.rides.length && i < 100; i++) {
+                // take random rides if num_rides > 100
+                var ride_id = data.rides.length > 100 ?
+                    Math.floor((Math.random() * data.rides.length)) : i;
+                var ride = data.rides[ride_id];
+                drawRide(ride[0], ride[1], ride[2], ride[3], ride[4]);
+            }
+        };
+        draw(data);
+
+        var eraseRides = function () {
+            svg.selectAll(".ride").remove();
+        };
+
+        document.getElementById('generate')
+            .addEventListener('click', function () {
+                eraseRides();
+                draw(data);
+            });
+    };
+
+    var holder = document.getElementById('holder'),
+        tests = {
+            filereader: typeof FileReader != 'undefined',
+            dnd: 'draggable' in document.createElement('span'),
+            formdata: !!window.FormData,
+            progress: "upload" in new XMLHttpRequest
+        },
+        support = {
+            filereader: document.getElementById('filereader'),
+            formdata: document.getElementById('formdata'),
+            progress: document.getElementById('progress')
+        },
+        fileupload = document.getElementById('upload');
+
+    "filereader formdata progress".split(' ').forEach(function (api) {
+        if (tests[api] === false) {
+            support[api].className = 'fail';
+        } else {
+            // FFS. I could have done el.hidden = true, but IE doesn't support
+            // hidden, so I tried to create a polyfill that would extend the
+            // Element.prototype, but then IE10 doesn't even give me access
+            // to the Element object. Brilliant.
+            support[api].className = 'hidden';
+        }
+
+    });
+
+
+    function previewfile(file) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            $('#exampleModalCenter').modal('toggle');
+            $("#svg").html("");
+            var svg = d3.select("svg");
+            var visualization = new Visualization(svg, JSON.parse(reader.result));
+        };
+        reader.readAsText(file);
     }
-  }
-  draw(data);
 
-  var eraseRides = function () {
-    svg.selectAll(".ride").remove();
-  }
-
-  document.getElementById('svgWrapper').classList.remove('hidden');
-
-  document.getElementById('generate')
-          .addEventListener('click', function() {
-            eraseRides();
-            draw(data);
-          });
-};
-
-var holder = document.getElementById('holder'),
-    tests = {
-      filereader: typeof FileReader != 'undefined',
-      dnd: 'draggable' in document.createElement('span'),
-      formdata: !!window.FormData,
-      progress: "upload" in new XMLHttpRequest
-    }, 
-    support = {
-      filereader: document.getElementById('filereader'),
-      formdata: document.getElementById('formdata'),
-      progress: document.getElementById('progress')
-    },
-    acceptedTypes = {
-      'image/png': true,
-      'image/jpeg': true,
-      'image/gif': true
-    },
-    progress = document.getElementById('uploadprogress'),
-    fileupload = document.getElementById('upload');
-
-"filereader formdata progress".split(' ').forEach(function (api) {
-  if (tests[api] === false) {
-    support[api].className = 'fail';
-  } else {
-    // FFS. I could have done el.hidden = true, but IE doesn't support
-    // hidden, so I tried to create a polyfill that would extend the
-    // Element.prototype, but then IE10 doesn't even give me access
-    // to the Element object. Brilliant.
-    support[api].className = 'hidden';
-  }
-
-});
-
-
-function previewfile(file) {
-  var reader = new FileReader();
-  reader.onload = function(){
-    $('#exampleModalCenter').modal('toggle')
-    $("#svg").html("");
-    var svg = d3.select("svg");
-    var visualization = new Visualization(svg, JSON.parse(reader.result));
-  };
-  reader.readAsText(file);
-}
-
-function readfiles(files) {
-    var formData = tests.formdata ? new FormData() : null;
-    for (var i = 0; i < files.length; i++) {
-      if (tests.formdata) formData.append('file', files[i]);
-      previewfile(files[i]);
+    function readfiles(files) {
+        var formData = tests.formdata ? new FormData() : null;
+        for (var i = 0; i < files.length; i++) {
+            if (tests.formdata) formData.append('file', files[i]);
+            previewfile(files[i]);
+        }
     }
-}
 
-if (tests.dnd) { 
-  holder.ondragover = function () { this.className = 'hover'; return false; };
-  holder.ondragend = function () { this.className = ''; return false; };
-  holder.ondrop = function (e) {
-    this.className = '';
-    e.preventDefault();
-    readfiles(e.dataTransfer.files);
-  }
-} else {
-  fileupload.className = 'hidden';
-  fileupload.querySelector('input').onchange = function () {
-    readfiles(this.files);
-  };
-}
+    if (tests.dnd) {
+        holder.ondragover = function () {
+            this.className = 'hover';
+            return false;
+        };
+        holder.ondragend = function () {
+            this.className = '';
+            return false;
+        };
+        holder.ondrop = function (e) {
+            this.className = '';
+            e.preventDefault();
+            readfiles(e.dataTransfer.files);
+        }
+    } else {
+        fileupload.className = 'hidden';
+        fileupload.querySelector('input').onchange = function () {
+            readfiles(this.files);
+        };
+    }
 
 </script>
 </body>
