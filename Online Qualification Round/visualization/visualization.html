@@ -24,11 +24,6 @@
             width: 100%;
         }
 
-        #svgWrapper {
-            height: 100%;
-            width: 100%;
-        }
-
         #svg {
             max-width: 100%;
             max-height: 100%;
@@ -76,56 +71,46 @@
             content: '%';
         }
 
-        .fail {
-            background: #c00;
-            padding: 2px;
-            color: #fff;
-        }
-
         .hidden {
             display: none !important;
         }
+
     </style>
 </head>
 <body>
-<nav class="navbar navbar-light bg-light">
+<nav id="nav" class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
-        <img src="../../icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="../../icon.png" width="30px" height="30px" class="d-inline-block align-top" alt="">
         Self-driving rides
     </a>
 
-    <form class="form-inline">
-        <button class="btn btn-primary btn-sm" id="generate">Generate new!</button>
-    </form>
+    <button class="btn btn-primary btn-sm" id="generate">Generate new!</button>
 
     <span class="navbar-text">
-    Ride taken: <div class="box" style="background:green"></div>
-  </span>
+        Ride taken: <span class="box" style="background:green"></span>
+    </span>
     <span class="navbar-text">
-    Ride taken but no points earned: <div class="box" style="background:orange"></div>
-  </span>
+        Ride taken but no points earned: <span class="box" style="background:orange"></span>
+    </span>
     <span class="navbar-text">
-    Ride missed: <div class="box" style="background:red"></div>
-  </span>
+        Ride missed: <span class="box" style="background:red"></span>
+    </span>
     <span class="navbar-text">
-    Bonus!: <div class="box" style="background:yellow"></div>
-  </span>
+        Bonus!: <span class="box" style="background:yellow"></span>
+    </span>
     <span class="navbar-text">
-    Note: Up to 100 randomly selected rides are displayed.
-  </span>
+        Note: Up to 100 randomly selected rides are displayed.
+    </span>
 
-    <form class="form-inline">
-        <button class="btn btn-secondary btn-sm" id="uploadbtn">Upload</button>
-    </form>
+    <button class="btn btn-secondary btn-sm" id="uploadbtn">Upload</button>
 
-    </div>
 </nav>
-<div class="container-fluid" style="height: 100%;">
-    <div class="row" style="height: 100%;">
-        <div id="svgWrapper" style="width: 100%; width: 100%">
-            <svg id="svg" width="100%" height="100%"/>
-        </div>
-    </div>
+
+<div style="margin-right: auto; margin-left: auto;">
+    <svg id="svg"
+         viewBox="0 0 100 100"
+         >
+    </svg>
 </div>
 
 <!-- Modal -->
@@ -160,22 +145,39 @@
     </div>
 </div>
 
-
 <script>
 
-    $('#exampleModalCenter').modal({'backdrop': 'static'})
-    $('#exampleModalCenter').modal('toggle')
+    $(window).on("resize", function() {
+        // avoid scrollbars, scale (arbitrary) to 96%.
+        container = $("#svg").parent();
+        w = $(window).width() * 0.96;
+        h = $(window).height();
+        h = h - $("#nav").outerHeight();
+        h = h * 0.96;
+        h = Math.floor(h);
+        w = Math.floor(w);
+        container.css( "height", h + 'px' );
+        container.css( "width", w + 'px' );
+    }).trigger("resize");
+
+
+    var modal = $('#exampleModalCenter');
+    modal.modal({'backdrop': 'static'});
+    modal.modal('toggle');
 
     $('#uploadbtn').on('click', function (e) {
         $('#exampleModalCenter').modal('toggle')
-    })
+    });
 
     var Visualization = function (svg, data) {
-        // The code here is copied from the hashcodejudge website
+        // The code here is copied from the hash code judge website
         // https://hashcodejudge.withgoogle.com/visualization/wheel/
 
-        var svg_width = svg.node().getBoundingClientRect().width;
-        var svg_height = svg.node().getBoundingClientRect().height;
+        var svg_width = Math.floor(svg.node().getBoundingClientRect().width);
+        var svg_height = Math.floor(svg.node().getBoundingClientRect().height);
+
+        $("#svg").attr("viewBox", "0 0 " + svg_width + " " + svg_height);
+
         // column is x, rows is y
         var data_width = data.column;
         var data_height = data.row;
@@ -204,19 +206,19 @@
             .attr("y", (svg_height - zero_y) - line_width * 2)
             .attr("width", image_width + 4 * line_width)
             .attr("height", image_height + 4 * line_width)
-            .attr("fill", "rgba(255,255,255,0.7)")
+            .attr("fill", "lightgray")
             .attr("stroke-width", 1)
             .style("stroke-dasharray", ("3, 3"));
 
         var checkRideColor = function (ride_qualifier) {
-            if (ride_qualifier > 0) return "green"
-            if (ride_qualifier == 0) return "orange"
-            if (ride_qualifier < 0) return "red"
-        }
+            if (ride_qualifier > 0) return "green";
+            if (ride_qualifier < 0) return "red";
+            return "orange";
+        };
         var checkBonusColor = function (ride_qualifier) {
-            if (ride_qualifier > 100) return "yellow"
+            if (ride_qualifier > 100) return "yellow";
             return checkRideColor(ride_qualifier);
-        }
+        };
 
         var drawRideInternal = function (x1, y1, x2, y2, ride_qualifier) {
             svg.append("line")
@@ -243,7 +245,7 @@
                 .attr("stroke", checkBonusColor(ride_qualifier))
                 .attr("fill", checkBonusColor(ride_qualifier))
                 .classed("ride", true);
-        }
+        };
         var drawRide = function (start_row, start_column, finish_row, finish_column, ride_qualifier) {
             drawRideInternal(
                 getImageX(start_row, start_column),
@@ -252,7 +254,7 @@
                 getImageY(finish_row, finish_row),
                 ride_qualifier
             );
-        }
+        };
 
         var draw = function (data) {
             for (var i = 0; i < data.rides.length && i < 100; i++) {
@@ -262,14 +264,12 @@
                 var ride = data.rides[ride_id];
                 drawRide(ride[0], ride[1], ride[2], ride[3], ride[4]);
             }
-        }
+        };
         draw(data);
 
         var eraseRides = function () {
             svg.selectAll(".ride").remove();
-        }
-
-        document.getElementById('svgWrapper').classList.remove('hidden');
+        };
 
         document.getElementById('generate')
             .addEventListener('click', function () {
@@ -290,12 +290,6 @@
             formdata: document.getElementById('formdata'),
             progress: document.getElementById('progress')
         },
-        acceptedTypes = {
-            'image/png': true,
-            'image/jpeg': true,
-            'image/gif': true
-        },
-        progress = document.getElementById('uploadprogress'),
         fileupload = document.getElementById('upload');
 
     "filereader formdata progress".split(' ').forEach(function (api) {
@@ -315,7 +309,7 @@
     function previewfile(file) {
         var reader = new FileReader();
         reader.onload = function () {
-            $('#exampleModalCenter').modal('toggle')
+            $('#exampleModalCenter').modal('toggle');
             $("#svg").html("");
             var svg = d3.select("svg");
             var visualization = new Visualization(svg, JSON.parse(reader.result));
