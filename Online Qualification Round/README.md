@@ -48,17 +48,36 @@ Overall **45,616,108** points.
 #### Example
 _`10`_ points, processed in `00:01 min`.
 
+![Example Output Visualization](output/a_example.png)
+
 #### Should Be Easy
 _`176,877`_ points, processed in `00:16 min`.
+
+![Example Output Visualization](output/b_should_be_easy.png)
 
 #### No Hurry
 _`15,790,161`_ points, processed in `03:57 min`.
 
+![Example Output Visualization](output/c_no_hurry.png)
+
 #### Metropolis
 _`8,183,115`_ points, processed in `41:34 min`
 
+![Example Output Visualization](output/d_metropolis.png)
+
 #### High Bonus
 _`21,465,945`_ points, processed in `15:05 min`
+
+![Example Output Visualization](output/e_high_bonus.png)
+
+## Visualization
+
+We saved the visualization from the [\# Hash Code Judge System](http://hashcodejudge.withgoogle.com)
+and added a responsive layout.
+
+Solutions can now be visualized by dropping their corresponding JSON file via drag & drop.
+
+![Example Output Visualization](visualization/visualization.png)
 
 ## Authors
 
