@@ -1,4 +1,7 @@
 import numpy as np
+import json
+
+from .score import Car, Score, Ride, check_ride_ids, check_vehicles, eval_ride
 
 
 class BaseSolver(object):
@@ -18,6 +21,11 @@ class BaseSolver(object):
         self.rides_list = []
         self.scheduling = []
         self.read_input()
+        self.json = {
+            "row": self.rows,
+            "column": self.columns,
+            "rides": []
+        }
 
     def solve(self):
         """Solves the problem.
@@ -28,34 +36,34 @@ class BaseSolver(object):
         raise NotImplementedError("This method needs to be implemented.")
 
     def compute_score(self):
-        """
-        This scoring method is not correct.
+        """Validates submission and computes score.
 
         :return: the computed score of the given scheduling
         """
-        self.score = 0
-        for i in range(len(self.scheduling)):
-            rides_per_vehicle = self.scheduling[i]
-            time_now = 0
-            pos_now = (0, 0)
+        if check_vehicles(self.vehicles, len(self.scheduling)):
+            print("vehicles: OK")
+        if check_ride_ids(self.scheduling, self.rides):
+            print("ride ids: OK")
 
-            for j in range(len(rides_per_vehicle)):
-                ride = rides_per_vehicle[j]
-                dist = abs(self.rides_list[ride][0] - pos_now[0]) + abs(self.rides_list[ride][1] - pos_now[1])
-                len_ride = abs(self.rides_list[ride][0] - self.rides_list[ride][2]) + abs(self.rides_list[ride][1] - self.rides_list[ride][3])
-                time_now += dist
+        ride_taken = []
+        score = Score()
+        for vehicle_rides in self.scheduling:
+            car = Car()
+            ride_taken.extend(vehicle_rides)
+            for rid in vehicle_rides:
+                r = self.rides_list[rid]
+                ride = Ride(rid, *r)
+                code = eval_ride(car, ride, score, self.bonus, self.steps)
+                self.json["rides"].append([ride.x1, ride.y1, ride.x2, ride.y2, code])
+        score.unassigned = self.rides - score.taken
 
-                # arrived perfectly
-                if time_now <= self.rides_list[ride][4]:
-                    self.score += self.bonus
-                    time_now += self.rides_list[ride][4] - time_now
+        ride_taken = set(ride_taken)
+        missed = set(range(self.rides)) - ride_taken
+        for m in missed:
+            r = self.rides_list[m]
+            self.json["rides"].append([r[0], r[1], r[2], r[3], -1])
 
-                latest_start = (self.rides_list[ride][5] - self.rides_list[ride][4]) - len_ride
-
-                if latest_start >= time_now:
-                    time_now += len_ride
-                    self.score += len_ride
-
+        self.score = score.total()
         return self.score
 
     def write(self, output_str):
@@ -66,10 +74,12 @@ class BaseSolver(object):
         """
         self.compute_score()
         print(self.score)
-        with open(output_str + "_" + str(self.score), 'w') as f:
+        with open(output_str, 'w') as f:
             for sched in self.scheduling:
                 f.write(" ".join([str(len(sched))] + [str(i) for i in sched]))
                 f.write('\n')
+        with open(output_str + ".json", 'w') as f:
+            json.dump(self.json, f)
 
     @staticmethod
     def _d(t0, t1):
