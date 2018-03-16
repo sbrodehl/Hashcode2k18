@@ -151,6 +151,10 @@ def parse_output(file_out):
 
 def eval_ride(car, ride, score, bonus, steps):
     """
+    Modified return values, so that returned integer
+    corresponds to json indicator,
+    see https://github.com/sbrodehl/Hashcode2k18/issues/2.
+
     :param car: assigned
     :param ride: to evaluate
     :param bonus: bonus points as specified by input file
@@ -163,15 +167,18 @@ def eval_ride(car, ride, score, bonus, steps):
             score.bonus_score += bonus  # bonus points
             score.wait_time += car.wait_time(ride)
             score.bonus += 1  # departures on time
+            score.raw_score += ride.distance()
+            car.assign(ride)
+            return 1000
         score.raw_score += ride.distance()
         car.assign(ride)
-        return True
+        return 1
     else:  # late
         car.step = car.arrival(ride)
         car.x = ride.x2
         car.y = ride.y2
         score.late += 1
-        return False
+        return 0
 
 
 def compute_score(file_in, file_out, check=False):
