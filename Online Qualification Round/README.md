@@ -1,5 +1,7 @@
 # Google \# Hash Code 2018 Online Qualification Round
 
+![Hash Code 2018 Online Qualification Round Banner](HashCode2018OQRbanner.png)
+
 Solutions and code for the [Google \# Hash Code 2018 Challenge](https://hashcode.withgoogle.com) **"Self-driving rides"**.
 
 The problem statement can be found [here](online_qualification_round_2018.pdf).
